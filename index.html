@@ -3,10 +3,34 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="Css2/styles.css" rel="stylesheet" type="text/css" />
+    <link href="Css2/style.css" rel="stylesheet" type="text/css" />
     <title>PokeDex</title>
   </head>
   <body>
+    <form id='register-form'>
+
+      <div class='input-wrapper'>
+        <label for='email'>E-mail</label>
+        <input id='email'>
+      </div>
+
+      <div class='input-wrapper'>
+        <label for='password'>Password</label>
+        <input id='password' type='password'>
+      </div>
+      <button>Register</button>
+    </form>
+
+    <button id='show-modal'>
+    Show modal
+  </button>
+
+  <button id='show-dialog'>
+    Show dialog
+  </button>
+
+  <div id='modal-container'></div>
+
     <ul class='pokemon-list'></ul>
     <script type="module" src="JS/promise-polyfill.js"></script>
     <script type="module" src="JS/fetch-polyfill.js"></script>
