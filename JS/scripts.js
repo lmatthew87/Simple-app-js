@@ -43,6 +43,9 @@ let pokemonRepository = (function () {
     let button = document.createElement("button");
     button.innerText = pokemon.name;
     button.classList.add("button-class");
+    button.setAttribute("data-toggle", "modal");
+    button.setAttribute("data-target", "#exampleModal")
+
     button.addEventListener('click', function () {
       showDetails(pokemon);
     });
@@ -144,34 +147,21 @@ function showModal(pokemon) {
   console.log("Show modal");
   let modalContainer = document.querySelector('#modal-container');
 
-  // Clear all existing modal content
-  modalContainer.innerHTML = '';
+  let modalBody = document.querySelector('.modal-body');
+  let modalTitle = document.querySelector('.modal-title');
 
-  let modal = document.createElement('div');
-  modal.classList.add('modal');
+  modalTitle.innerText = pokemon.name;
 
-  // Add the new modal content
-  let closeButtonElement = document.createElement('button');
-  closeButtonElement.classList.add('modal-close');
-  closeButtonElement.innerText = 'Close';
-  closeButtonElement.addEventListener('click', hideModal);
-
-  let titleElement = document.createElement('h1');
-  titleElement.innerText = pokemon.name;
-
+  modalBody.innerHtml = "";
   let contentElement = document.createElement('p');
   contentElement.innerText = pokemon.height;
 
   let imageElement = document.createElement('img');
   imageElement.setAttribute('src', pokemon.imageUrl);
+  modalBody.appendChild(contentElement);
+  modalBody.appendChild(imageElement);
 
-  modal.appendChild(closeButtonElement);
-  modal.appendChild(titleElement);
-  modal.appendChild(contentElement);
-  modal.appendChild(imageElement);
-  modalContainer.appendChild(modal);
-
-  modalContainer.classList.add('is-visible');
+  $("#pokemonModal").modal("toggle");
 }
 
 let dialogPromiseReject; // This can be set later, by showDialog
@@ -190,16 +180,16 @@ function showDialog(title, text) {
   showModal(title, text);
 
   return new Promise((resolve, reject) => {
-  cancelButton.addEventListener('click', hideModal);
-  confirmButton.addEventListener('click', () => {
-    dialogPromiseReject = null; // Reset this
-    hideModal();
-    resolve();
-  });
+    cancelButton.addEventListener('click', hideModal);
+    confirmButton.addEventListener('click', () => {
+      dialogPromiseReject = null; // Reset this
+      hideModal();
+      resolve();
+    });
 
-  // This can be used to reject from other functions
-  dialogPromiseReject = reject;
-});
+    // This can be used to reject from other functions
+    dialogPromiseReject = reject;
+  });
 
   // We have defined modalContainer here
   let modalContainer = document.querySelector('#modal-container');
@@ -219,32 +209,20 @@ function showDialog(title, text) {
   modal.appendChild(cancelButton);
 }
 
-document.querySelector('#show-modal').addEventListener('click', () => {
-  showModal('Modal title', 'This is the modal content!');
-  console.log("cllick");
-  document.querySelector('#show-dialog').addEventListener('click', () => {
-  showDialog('Confirm action', 'Are you sure you want to do this?').then(function() {
-    alert('confirmed!');
-  }, () => {
-    alert('not confirmed');
-  });
+window.addEventListener('keydown', (e) => {
+  let modalContainer = document.querySelector('#modal-container');
+  if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+    hideModal();
+  }
 });
 
-  window.addEventListener('keydown', (e) => {
-    let modalContainer = document.querySelector('#modal-container');
-    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
-      hideModal();
-    }
-  });
-
-  let modalContainer = document.querySelector('#modal-container');
-  modalContainer.addEventListener('click', (e) => {
-    console.log("click inside");
-//    let target = e.target;
-//    if (target === modalContainer) {
-      hideModal();
-//    }
-  });
+let modalContainer = document.querySelector('#modal-container');
+modalContainer.addEventListener('click', (e) => {
+  console.log("click inside");
+  //    let target = e.target;
+  //    if (target === modalContainer) {
+  hideModal();
+  //    }
 });
 
 // This is the actual program
