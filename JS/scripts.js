@@ -38,20 +38,20 @@ let pokemonRepository = (function () {
     });
   }
   function addListItem(pokemon) {
-    let pokemonList = document.querySelector(".pokemon-list");
-    let listItemPokemon = document.createElement("li");
-    let button = document.createElement("button");
+    let pokemonList = document.querySelector('.pokemon-list');
+    let listItemPokemon = document.createElement('li');
+    let button = document.createElement('button');
     button.innerText = pokemon.name;
-    button.classList.add("button-class");
-    button.setAttribute("data-toggle", "modal");
-    button.setAttribute("data-target", "#exampleModal")
+    button.classList.add('button-class');
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#exampleModal')
 
     button.addEventListener('click', function () {
       showDetails(pokemon);
     });
     listItemPokemon.appendChild(button);
     pokemonList.appendChild(listItemPokemon);
-  };
+  }
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
       showModal(pokemon);
@@ -71,23 +71,11 @@ let pokemonRepository = (function () {
   let emailInput = document.querySelector('#email');
   let passwordInput = document.querySelector('#password')
 
-  function validateEmail(){
-    let value = emailInput.value;
-    let hasAtSign = value.indexOf('@')> -1;
-    let hasDot = value.indexOf('.') > -1;
-    return value && hasAtSign && hasDot;
-  }
-
-  function validatePassword() {
-    let  value = passwordInput.value;
-    return value && value.length >=8;
-  }
-
   function showErrorMessage(input, message) {
     let container = input.parentElement;
     let error = container.querySelector('.error-message;');
     if(error){
-      conatiner.removeChild(error);
+      container.removeChild(error);
     }
 
     if (message) {
@@ -144,15 +132,15 @@ let pokemonRepository = (function () {
 
 
 function showModal(pokemon) {
-  console.log("Show modal");
-  let modalContainer = document.querySelector('#modal-container');
+  console.log('Show modal');
+  //let modalContainer = document.querySelector('#modal-container');
 
   let modalBody = document.querySelector('.modal-body');
   let modalTitle = document.querySelector('.modal-title');
 
   modalTitle.innerText = pokemon.name;
 
-  modalBody.innerHtml = "";
+  modalBody.innerHtml = '';
   let contentElement = document.createElement('p');
   contentElement.innerText = pokemon.height;
 
@@ -160,8 +148,8 @@ function showModal(pokemon) {
   imageElement.setAttribute('src', pokemon.imageUrl);
   modalBody.appendChild(contentElement);
   modalBody.appendChild(imageElement);
-
-  $("#pokemonModal").modal("toggle");
+/* eslint-env jquery */
+  $('#pokemonModal').modal('toggle');
 }
 
 let dialogPromiseReject; // This can be set later, by showDialog
@@ -176,39 +164,6 @@ function hideModal() {
   }
 }
 
-function showDialog(title, text) {
-  showModal(title, text);
-
-  return new Promise((resolve, reject) => {
-    cancelButton.addEventListener('click', hideModal);
-    confirmButton.addEventListener('click', () => {
-      dialogPromiseReject = null; // Reset this
-      hideModal();
-      resolve();
-    });
-
-    // This can be used to reject from other functions
-    dialogPromiseReject = reject;
-  });
-
-  // We have defined modalContainer here
-  let modalContainer = document.querySelector('#modal-container');
-
-  // We want to add a confirm and cancel button to the modal
-  let modal = modalContainer.querySelector('.modal');
-
-  let confirmButton = document.createElement('button');
-  confirmButton.classList.add('modal-confirm');
-  confirmButton.innerText = 'Confirm';
-
-  let cancelButton = document.createElement('button');
-  cancelButton.classList.add('modal-cancel');
-  cancelButton.innerText = 'Cancel';
-
-  modal.appendChild(confirmButton);
-  modal.appendChild(cancelButton);
-}
-
 window.addEventListener('keydown', (e) => {
   let modalContainer = document.querySelector('#modal-container');
   if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
@@ -217,12 +172,9 @@ window.addEventListener('keydown', (e) => {
 });
 
 let modalContainer = document.querySelector('#modal-container');
-modalContainer.addEventListener('click', (e) => {
-  console.log("click inside");
-  //    let target = e.target;
-  //    if (target === modalContainer) {
+modalContainer.addEventListener('click', () => {
+  console.log('click inside');
   hideModal();
-  //    }
 });
 
 // This is the actual program
